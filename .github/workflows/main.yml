@@ -3,7 +3,7 @@ name: Build and Push Docker image to Docker Hub
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
-    runs-on: ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -16,7 +16,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: 'githubactions/workflows:latest'
+          tags: 'alekyagandem/githubactions:latest'
       - name: SSH to EC2 instance and pull Docker image
         uses: appleboy/ssh-action@master
         with:
@@ -25,7 +25,7 @@ jobs:
           key: '${{ secrets.SSH_PRIVATE_KEY }}'
           port: '${{ secrets.EC2_SSH_PORT }}'
           script: |
-            docker pull alekyagandem/githubactions
+            docker pull alekyagandem/githubactions:latest
       - name: SSH to EC2 instance and run Docker container
         uses: appleboy/ssh-action@master
         with:
@@ -41,4 +41,4 @@ jobs:
             (if any)
 
             docker run -d -p 80:80 --name my-container
-            alekyagandem/github
+            alekyagandem/testrepos:latest
